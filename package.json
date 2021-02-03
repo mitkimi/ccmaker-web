@@ -22,6 +22,7 @@
   "dependencies": {
     "@ant-design/pro-layout": "^6.5.0",
     "@umijs/preset-react": "1.x",
+    "fs": "0.0.1-security",
     "griffith": "^1.10.0",
     "umi": "^3.3.7"
   },

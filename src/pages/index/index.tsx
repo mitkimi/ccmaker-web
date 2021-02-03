@@ -1,4 +1,5 @@
 import React from 'react';
+import fs from 'fs';
 import Header from '../../components/Header';
 import './index.less';
 const WaveSurfer = require('../../assets/WaveSurfer.js');
@@ -7,6 +8,7 @@ let wavesurfer: any = null;
 class IndexPage extends React.Component {
   state = {
     currentTime: 0,
+    subtitleTxt: '',
   };
 
   componentDidMount() {
@@ -46,6 +48,41 @@ class IndexPage extends React.Component {
     wavesurfer.load(file);
   };
 
+  handleReadTxtFile = () => {
+    // 载入多行字幕文件
+    const inputObj: any = document.createElement('input');
+    inputObj.setAttribute('id', 'txtFile');
+    inputObj.setAttribute('type', 'file');
+    inputObj.setAttribute('style', 'visibility: hidden');
+    document.body.appendChild(inputObj);
+    inputObj.addEventListener('change', this.readTxtFile);
+    inputObj.click();
+  };
+
+  readTxtFile = () => {
+    const ef: any = document.getElementById('txtFile');
+    var files: any = ef.files;
+    console.log('files', files);
+    const reader = new FileReader();
+    reader.onload = ((theFile) => {
+      return (e: any = theFile) => {
+        console.log('e.target.result', e.target.result);
+        this.setState({
+          subtitleTxt: e.target.result,
+        });
+      };
+    })(files[0]);
+    reader.readAsText(files[0]);
+    // fs.readFile(path, (err: any, data: any) => {
+    //   console.log('callback', err, data)
+    //   if (!err) {
+    //     const text: string = data.toString()
+    //     console.log('text', text)
+    //   }
+    // })
+    // this.subtitle.text = txt
+  };
+
   render() {
     return (
       <div className="page">
@@ -65,6 +102,8 @@ class IndexPage extends React.Component {
               onChange={this.handleImportVideo}
             />
             字幕
+            <button onClick={this.handleReadTxtFile}>aaaa</button>
+            {this.state.subtitleTxt}
           </div>
         </div>
       </div>
